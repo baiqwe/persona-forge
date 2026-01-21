@@ -1,0 +1,203 @@
+{
+  "common": {
+    "appName": "OC 锻造坊",
+    "signIn": "登录",
+    "signUp": "注册",
+    "signOut": "退出登录",
+    "email": "邮箱",
+    "password": "密码",
+    "loading": "加载中...",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "download": "下载",
+    "copy": "复制",
+    "copied": "已复制！",
+    "generate": "生成",
+    "generating": "生成中...",
+    "send": "发送",
+    "close": "关闭",
+    "confirm": "确认",
+    "poweredByAI": "AI 魔法驱动"
+  },
+  "nav": {
+    "home": "首页",
+    "myCharacters": "我的角色",
+    "nameGenerator": "名字生成器",
+    "avatarMaker": "头像制作",
+    "workbench": "工作台",
+    "startCreating": "开始创作"
+  },
+  "auth": {
+    "welcomeBack": "欢迎回来，锻造师",
+    "joinTheForge": "加入锻造坊",
+    "signInDescription": "登录以访问您的角色并继续创作",
+    "signUpDescription": "创建账户以保存您的角色并解锁所有功能",
+    "emailPlaceholder": "your@email.com",
+    "passwordPlaceholder": "••••••••",
+    "noAccount": "还没有账户？",
+    "hasAccount": "已有账户？",
+    "signInSuccess": "欢迎回来！",
+    "signInSuccessDesc": "您已成功登录。",
+    "signUpSuccess": "账户已创建！",
+    "signUpSuccessDesc": "请检查您的邮箱以验证账户。",
+    "signOutSuccess": "已退出",
+    "signOutSuccessDesc": "您已成功退出登录。",
+    "authError": "认证错误"
+  },
+  "dashboard": {
+    "title": "我的角色",
+    "subtitle": "您锻造的角色收藏",
+    "noCharacters": "暂无角色",
+    "noCharactersDesc": "从生成名字或创建头像开始",
+    "deleteConfirmTitle": "删除角色",
+    "deleteConfirmDesc": "确定要删除「{{name}}」吗？此操作无法撤销。",
+    "deleteSuccess": "角色已删除",
+    "deleteSuccessDesc": "「{{name}}」已从您的收藏中移除。",
+    "newCharacter": "新建角色"
+  },
+  "workbench": {
+    "title": "角色工作台",
+    "subtitle": "从概念到对话，锻造您的原创角色",
+    "editTitle": "编辑角色",
+    "editSubtitle": "更新和完善您的角色",
+    "tabs": {
+      "identity": "身份",
+      "visual": "外观",
+      "chat": "对话"
+    },
+    "identity": {
+      "title": "角色身份",
+      "nameLabel": "角色名称",
+      "namePlaceholder": "输入角色名称",
+      "generateName": "生成",
+      "keywordsLabel": "角色关键词",
+      "keywordsDesc": "选择定义您角色的特征",
+      "personaLabel": "角色人设",
+      "personaPlaceholder": "描述您角色的人设和背景故事...",
+      "expandPersona": "AI 扩写",
+      "expanding": "扩写中..."
+    },
+    "visual": {
+      "title": "角色外观",
+      "avatarLabel": "角色头像",
+      "generateAvatar": "生成头像",
+      "regenerate": "重新生成",
+      "noAvatar": "尚未生成头像"
+    },
+    "chat": {
+      "title": "与 {{name}} 对话",
+      "placeholder": "输入消息给 {{name}}...",
+      "defaultPlaceholder": "输入消息...",
+      "startChat": "开始与您的角色对话"
+    },
+    "actions": {
+      "saveCharacter": "保存角色",
+      "saving": "保存中...",
+      "downloadCard": "下载卡片",
+      "signInToSave": "登录以保存您的角色"
+    },
+    "toast": {
+      "saved": "角色已保存",
+      "savedDesc": "您的角色已成功保存。",
+      "updated": "角色已更新",
+      "updatedDesc": "您的角色已成功更新。",
+      "nameCopied": "名字已复制",
+      "nameCopiedDesc": "「{{name}}」已复制到剪贴板。"
+    }
+  },
+  "nameGenerator": {
+    "title": "奇幻名字生成器",
+    "subtitle": "使用 AI 创意为您的角色生成独特的名字",
+    "raceLabel": "种族",
+    "styleLabel": "风格",
+    "generateNames": "生成名字",
+    "generatedNames": "生成的名字",
+    "createCharacter": "创建角色",
+    "races": {
+      "human": "人类",
+      "elf": "精灵",
+      "dwarf": "矮人",
+      "orc": "兽人",
+      "tiefling": "提夫林",
+      "dragonborn": "龙裔"
+    },
+    "styles": {
+      "fantasy": "奇幻",
+      "medieval": "中世纪",
+      "modern": "现代",
+      "scifi": "科幻",
+      "japanese": "日式",
+      "nordic": "北欧"
+    }
+  },
+  "avatarMaker": {
+    "title": "AI 头像制作",
+    "subtitle": "使用 AI 图像生成创建精美的角色肖像",
+    "descriptionLabel": "描述您的角色",
+    "descriptionPlaceholder": "详细描述您角色的外貌...",
+    "tagsLabel": "快速标签",
+    "generateAvatars": "生成头像",
+    "generatedAvatars": "生成的头像",
+    "selectAvatar": "选择此头像",
+    "chatWithCharacter": "与此角色对话",
+    "categories": {
+      "hairColor": "发色",
+      "eyeColor": "瞳色",
+      "outfit": "服装"
+    },
+    "tags": {
+      "black": "黑色",
+      "blonde": "金色",
+      "brown": "棕色",
+      "red": "红色",
+      "white": "白色",
+      "blue": "蓝色",
+      "green": "绿色",
+      "purple": "紫色",
+      "armor": "盔甲",
+      "robe": "长袍",
+      "casual": "休闲",
+      "formal": "正式"
+    }
+  },
+  "home": {
+    "heroTitle": "锻造您的",
+    "heroTitleHighlight": "原创角色",
+    "heroSubtitle": "AI 驱动的工具，为您生成名字、创建头像，让角色栩栩如生",
+    "startForging": "开始锻造",
+    "tryFreeTools": "试用免费工具",
+    "scrollToExplore": "滚动探索",
+    "features": {
+      "title": "强大的创作工具",
+      "subtitle": "打造令人难忘的角色所需的一切",
+      "nameGenerator": {
+        "title": "名字生成器",
+        "description": "根据种族、文化和风格偏好生成独特的奇幻名字"
+      },
+      "avatarMaker": {
+        "title": "头像制作",
+        "description": "使用 AI 图像生成创建精美的角色肖像"
+      },
+      "workbench": {
+        "title": "角色工作台",
+        "description": "构建完整的角色档案，包含人设、背景故事和互动对话"
+      }
+    },
+    "stats": {
+      "charactersCreated": "已创建角色",
+      "namesGenerated": "已生成名字",
+      "userRating": "用户评分"
+    },
+    "cta": {
+      "title": "准备好创作了吗？",
+      "subtitle": "从免费的名字生成器开始，体验魔法",
+      "button": "试用名字生成器"
+    },
+    "footer": {
+      "copyright": "© 2024 OC 锻造坊。保留所有权利。"
+    }
+  }
+}

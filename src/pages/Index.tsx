@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Flame, Wand2, Image, Anvil, Sparkles, ArrowRight, Star, Users, Zap } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/layout/Layout";
 import { ForgeCard } from "@/components/shared/ForgeCard";
@@ -8,37 +9,39 @@ import { EmberParticles } from "@/components/shared/EmberParticles";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import heroImage from "@/assets/hero-forge.jpg";
 
-const features = [
-  {
-    icon: Wand2,
-    title: "AI Name Generator",
-    description: "Generate unique fantasy names for any race or style. Perfect for characters, places, and more.",
-    link: "/name-generator",
-    cta: "Generate Names",
-  },
-  {
-    icon: Image,
-    title: "Visual Avatar Maker",
-    description: "Create stunning character portraits with AI. Describe your vision and watch it come to life.",
-    link: "/avatar-maker",
-    cta: "Create Avatar",
-  },
-  {
-    icon: Anvil,
-    title: "Character Workbench",
-    description: "Build complete character cards with personality, backstory, and visuals. Chat with your creations.",
-    link: "/workbench",
-    cta: "Start Forging",
-  },
-];
-
-const stats = [
-  { icon: Users, value: "10K+", label: "Characters Created" },
-  { icon: Zap, value: "50K+", label: "Names Generated" },
-  { icon: Star, value: "4.9", label: "User Rating" },
-];
-
 export default function Index() {
+  const { t } = useTranslation();
+
+  const features = [
+    {
+      icon: Wand2,
+      title: t("home.features.nameGenerator.title"),
+      description: t("home.features.nameGenerator.description"),
+      link: "/name-generator",
+      cta: t("common.generate"),
+    },
+    {
+      icon: Image,
+      title: t("home.features.avatarMaker.title"),
+      description: t("home.features.avatarMaker.description"),
+      link: "/avatar-maker",
+      cta: t("common.create"),
+    },
+    {
+      icon: Anvil,
+      title: t("home.features.workbench.title"),
+      description: t("home.features.workbench.description"),
+      link: "/workbench",
+      cta: t("home.startForging"),
+    },
+  ];
+
+  const stats = [
+    { icon: Users, value: "10K+", label: t("home.stats.charactersCreated") },
+    { icon: Zap, value: "50K+", label: t("home.stats.namesGenerated") },
+    { icon: Star, value: "4.9", label: t("home.stats.userRating") },
+  ];
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -71,7 +74,7 @@ export default function Index() {
             >
               <Sparkles className="h-4 w-4 text-primary animate-pulse" />
               <span className="text-sm font-medium text-muted-foreground">
-                Powered by AI Magic
+                {t("common.poweredByAI")}
               </span>
             </motion.div>
             
@@ -82,9 +85,9 @@ export default function Index() {
               transition={{ delay: 0.3, duration: 0.8 }}
               className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-6"
             >
-              <span className="text-foreground">Breathe Life Into</span>
+              <span className="text-foreground">{t("home.heroTitle")}</span>
               <br />
-              <span className="text-gradient-ember">Your Imagination</span>
+              <span className="text-gradient-ember">{t("home.heroTitleHighlight")}</span>
             </motion.h1>
             
             {/* Subtitle */}
@@ -94,7 +97,7 @@ export default function Index() {
               transition={{ delay: 0.5, duration: 0.8 }}
               className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10"
             >
-              Create unique characters, generate fantasy names, and bring your original creations to life with AI-powered tools.
+              {t("home.heroSubtitle")}
             </motion.p>
             
             {/* CTA Buttons */}
@@ -108,7 +111,7 @@ export default function Index() {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
                   <Button variant="hero" size="xl" className="group">
                     <Flame className="h-5 w-5 group-hover:animate-pulse" />
-                    Start Forging
+                    {t("home.startForging")}
                     <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </Button>
                 </motion.div>
@@ -116,7 +119,7 @@ export default function Index() {
               <Link to="/name-generator">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
                   <Button variant="outline" size="lg" className="backdrop-blur-sm">
-                    Try Free Tools
+                    {t("home.tryFreeTools")}
                   </Button>
                 </motion.div>
               </Link>
@@ -149,10 +152,10 @@ export default function Index() {
         <div className="container mx-auto px-4">
           <AnimatedSection className="text-center mb-16">
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-gradient-ember mb-4">
-              Your Creative Arsenal
+              {t("home.features.title")}
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Powerful AI tools designed for storytellers, artists, and dreamers.
+              {t("home.features.subtitle")}
             </p>
           </AnimatedSection>
           
@@ -234,17 +237,16 @@ export default function Index() {
         <div className="relative z-10 container mx-auto px-4 text-center">
           <AnimatedSection>
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Ready to Create Your First
-              <span className="text-gradient-ember"> Character?</span>
+              {t("home.cta.title")}
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto mb-10">
-              No sign-up required for our free tools. Start generating names and avatars instantly.
+              {t("home.cta.subtitle")}
             </p>
             <Link to="/name-generator">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }} className="inline-block">
                 <Button variant="ember" size="xl">
                   <Wand2 className="h-5 w-5" />
-                  Try Name Generator Free
+                  {t("home.cta.button")}
                 </Button>
               </motion.div>
             </Link>
@@ -258,10 +260,10 @@ export default function Index() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2">
               <Flame className="h-6 w-6 text-primary" />
-              <span className="font-display text-lg font-bold text-gradient-ember">OC Forge</span>
+              <span className="font-display text-lg font-bold text-gradient-ember">{t("common.appName")}</span>
             </div>
             <p className="text-sm text-muted-foreground text-center md:text-right">
-              © 2024 OC Forge. Breathe life into your imagination.
+              {t("home.footer.copyright")}
             </p>
           </div>
         </div>

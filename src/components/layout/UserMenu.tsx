@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { User, LogOut, LayoutDashboard } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,12 +16,13 @@ import { useToast } from "@/hooks/use-toast";
 export function UserMenu() {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleSignOut = async () => {
     await signOut();
     toast({
-      title: "Signed Out",
-      description: "You have been signed out successfully.",
+      title: t("auth.signOutSuccess"),
+      description: t("auth.signOutSuccessDesc"),
     });
   };
 
@@ -30,7 +32,7 @@ export function UserMenu() {
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Button variant="outline" className="gap-2">
             <User className="h-4 w-4" />
-            <span className="hidden sm:inline">Sign In</span>
+            <span className="hidden sm:inline">{t("common.signIn")}</span>
           </Button>
         </motion.div>
       </Link>
@@ -60,7 +62,7 @@ export function UserMenu() {
         <DropdownMenuItem asChild>
           <Link to="/dashboard" className="flex items-center gap-2 cursor-pointer">
             <LayoutDashboard className="h-4 w-4" />
-            My Characters
+            {t("nav.myCharacters")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -69,7 +71,7 @@ export function UserMenu() {
           className="text-destructive focus:text-destructive cursor-pointer"
         >
           <LogOut className="h-4 w-4 mr-2" />
-          Sign Out
+          {t("common.signOut")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

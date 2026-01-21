@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Plus, Wand2, Image, Trash2, MessageCircle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/layout/Layout";
 import { ForgeCard } from "@/components/shared/ForgeCard";
@@ -33,6 +34,7 @@ interface Character {
 }
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -65,7 +67,7 @@ export default function Dashboard() {
       setCharacters(data || []);
     } catch (error) {
       toast({
-        title: "Error",
+        title: t("auth.authError"),
         description: "Failed to load characters",
         variant: "destructive",
       });
@@ -74,7 +76,7 @@ export default function Dashboard() {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string, name: string) => {
     setDeletingId(id);
     try {
       const { error } = await supabase
@@ -86,12 +88,12 @@ export default function Dashboard() {
 
       setCharacters((prev) => prev.filter((c) => c.id !== id));
       toast({
-        title: "Character Deleted",
-        description: "Your character has been removed.",
+        title: t("dashboard.deleteSuccess"),
+        description: t("dashboard.deleteSuccessDesc", { name }),
       });
     } catch (error) {
       toast({
-        title: "Error",
+        title: t("auth.authError"),
         description: "Failed to delete character",
         variant: "destructive",
       });
@@ -117,13 +119,13 @@ export default function Dashboard() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <SectionHeader
-              title="My Characters"
-              subtitle="Your collection of original characters"
+              title={t("dashboard.title")}
+              subtitle={t("dashboard.subtitle")}
             />
             <Link to="/workbench">
               <Button variant="ember" size="lg">
                 <Plus className="h-5 w-5" />
-                New Character
+                {t("dashboard.newCharacter")}
               </Button>
             </Link>
           </div>
@@ -156,18 +158,18 @@ export default function Dashboard() {
                           </AlertDialogTrigger>
                           <AlertDialogContent className="bg-card border-border">
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Delete {character.name}?</AlertDialogTitle>
+                              <AlertDialogTitle>{t("dashboard.deleteConfirmTitle")}</AlertDialogTitle>
                               <AlertDialogDescription>
-                                This action cannot be undone. This will permanently delete your character.
+                                {t("dashboard.deleteConfirmDesc", { name: character.name })}
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
                               <AlertDialogAction
-                                onClick={() => handleDelete(character.id)}
+                                onClick={() => handleDelete(character.id, character.name)}
                                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                               >
-                                Delete
+                                {t("common.delete")}
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
@@ -223,7 +225,7 @@ export default function Dashboard() {
                         >
                           <Button variant="ember" size="sm">
                             <MessageCircle className="h-4 w-4" />
-                            Chat
+                            {t("workbench.tabs.chat")}
                           </Button>
                         </Link>
                       </ForgeCard>
@@ -244,22 +246,22 @@ export default function Dashboard() {
                   <Plus className="h-10 w-10 text-muted-foreground" />
                 </div>
                 <h3 className="font-display text-2xl font-bold text-foreground mb-3">
-                  No Characters Yet
+                  {t("dashboard.noCharacters")}
                 </h3>
                 <p className="text-muted-foreground mb-8">
-                  Your treasure vault is empty! Start by generating a name or creating an avatar.
+                  {t("dashboard.noCharactersDesc")}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link to="/name-generator">
                     <Button variant="outline" size="lg" className="w-full sm:w-auto">
                       <Wand2 className="h-5 w-5" />
-                      Generate Name
+                      {t("nav.nameGenerator")}
                     </Button>
                   </Link>
                   <Link to="/avatar-maker">
                     <Button variant="outline" size="lg" className="w-full sm:w-auto">
                       <Image className="h-5 w-5" />
-                      Create Avatar
+                      {t("nav.avatarMaker")}
                     </Button>
                   </Link>
                 </div>

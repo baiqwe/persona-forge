@@ -1,0 +1,203 @@
+{
+  "common": {
+    "appName": "OC Forge",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "download": "Download",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "generate": "Generate",
+    "generating": "Generating...",
+    "send": "Send",
+    "close": "Close",
+    "confirm": "Confirm",
+    "poweredByAI": "Powered by AI Magic"
+  },
+  "nav": {
+    "home": "Home",
+    "myCharacters": "My Characters",
+    "nameGenerator": "Name Generator",
+    "avatarMaker": "Avatar Maker",
+    "workbench": "Workbench",
+    "startCreating": "Start Creating"
+  },
+  "auth": {
+    "welcomeBack": "Welcome back, Forger",
+    "joinTheForge": "Join the Forge",
+    "signInDescription": "Sign in to access your characters and continue crafting",
+    "signUpDescription": "Create an account to save your characters and unlock all features",
+    "emailPlaceholder": "your@email.com",
+    "passwordPlaceholder": "••••••••",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signInSuccess": "Welcome Back!",
+    "signInSuccessDesc": "You have been signed in successfully.",
+    "signUpSuccess": "Account Created!",
+    "signUpSuccessDesc": "Please check your email to verify your account.",
+    "signOutSuccess": "Signed Out",
+    "signOutSuccessDesc": "You have been signed out successfully.",
+    "authError": "Authentication Error"
+  },
+  "dashboard": {
+    "title": "My Characters",
+    "subtitle": "Your collection of forged characters",
+    "noCharacters": "No Characters Yet",
+    "noCharactersDesc": "Start by generating a name or creating an avatar",
+    "deleteConfirmTitle": "Delete Character",
+    "deleteConfirmDesc": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+    "deleteSuccess": "Character Deleted",
+    "deleteSuccessDesc": "\"{{name}}\" has been removed from your collection.",
+    "newCharacter": "New Character"
+  },
+  "workbench": {
+    "title": "Character Workbench",
+    "subtitle": "Forge your original character from concept to conversation",
+    "editTitle": "Edit Character",
+    "editSubtitle": "Update and refine your character",
+    "tabs": {
+      "identity": "Identity",
+      "visual": "Visual",
+      "chat": "Chat"
+    },
+    "identity": {
+      "title": "Character Identity",
+      "nameLabel": "Character Name",
+      "namePlaceholder": "Enter character name",
+      "generateName": "Generate",
+      "keywordsLabel": "Character Keywords",
+      "keywordsDesc": "Select traits that define your character",
+      "personaLabel": "Character Persona",
+      "personaPlaceholder": "Write your character's persona and background story...",
+      "expandPersona": "Expand with AI",
+      "expanding": "Expanding..."
+    },
+    "visual": {
+      "title": "Character Visual",
+      "avatarLabel": "Character Avatar",
+      "generateAvatar": "Generate Avatar",
+      "regenerate": "Regenerate",
+      "noAvatar": "No avatar generated yet"
+    },
+    "chat": {
+      "title": "Chat with {{name}}",
+      "placeholder": "Type a message to {{name}}...",
+      "defaultPlaceholder": "Type a message...",
+      "startChat": "Start a conversation with your character"
+    },
+    "actions": {
+      "saveCharacter": "Save Character",
+      "saving": "Saving...",
+      "downloadCard": "Download Card",
+      "signInToSave": "Sign in to save your character"
+    },
+    "toast": {
+      "saved": "Character Saved",
+      "savedDesc": "Your character has been saved successfully.",
+      "updated": "Character Updated",
+      "updatedDesc": "Your character has been updated successfully.",
+      "nameCopied": "Name Copied",
+      "nameCopiedDesc": "\"{{name}}\" has been copied to clipboard."
+    }
+  },
+  "nameGenerator": {
+    "title": "Fantasy Name Generator",
+    "subtitle": "Generate unique names for your characters with AI-powered creativity",
+    "raceLabel": "Race",
+    "styleLabel": "Style",
+    "generateNames": "Generate Names",
+    "generatedNames": "Generated Names",
+    "createCharacter": "Create Character",
+    "races": {
+      "human": "Human",
+      "elf": "Elf",
+      "dwarf": "Dwarf",
+      "orc": "Orc",
+      "tiefling": "Tiefling",
+      "dragonborn": "Dragonborn"
+    },
+    "styles": {
+      "fantasy": "Fantasy",
+      "medieval": "Medieval",
+      "modern": "Modern",
+      "scifi": "Sci-Fi",
+      "japanese": "Japanese",
+      "nordic": "Nordic"
+    }
+  },
+  "avatarMaker": {
+    "title": "AI Avatar Maker",
+    "subtitle": "Create stunning character portraits with AI-powered image generation",
+    "descriptionLabel": "Describe Your Character",
+    "descriptionPlaceholder": "Describe your character's appearance in detail...",
+    "tagsLabel": "Quick Tags",
+    "generateAvatars": "Generate Avatars",
+    "generatedAvatars": "Generated Avatars",
+    "selectAvatar": "Select This Avatar",
+    "chatWithCharacter": "Chat with this Character",
+    "categories": {
+      "hairColor": "Hair Color",
+      "eyeColor": "Eye Color",
+      "outfit": "Outfit"
+    },
+    "tags": {
+      "black": "Black",
+      "blonde": "Blonde",
+      "brown": "Brown",
+      "red": "Red",
+      "white": "White",
+      "blue": "Blue",
+      "green": "Green",
+      "purple": "Purple",
+      "armor": "Armor",
+      "robe": "Robe",
+      "casual": "Casual",
+      "formal": "Formal"
+    }
+  },
+  "home": {
+    "heroTitle": "Forge Your",
+    "heroTitleHighlight": "Original Characters",
+    "heroSubtitle": "AI-powered tools to generate names, create avatars, and bring your characters to life",
+    "startForging": "Start Forging",
+    "tryFreeTools": "Try Free Tools",
+    "scrollToExplore": "Scroll to explore",
+    "features": {
+      "title": "Powerful Creation Tools",
+      "subtitle": "Everything you need to craft memorable characters",
+      "nameGenerator": {
+        "title": "Name Generator",
+        "description": "Generate unique fantasy names based on race, culture, and style preferences"
+      },
+      "avatarMaker": {
+        "title": "Avatar Maker",
+        "description": "Create stunning character portraits with AI-powered image generation"
+      },
+      "workbench": {
+        "title": "Character Workbench",
+        "description": "Build complete character profiles with persona, backstory, and interactive chat"
+      }
+    },
+    "stats": {
+      "charactersCreated": "Characters Created",
+      "namesGenerated": "Names Generated",
+      "userRating": "User Rating"
+    },
+    "cta": {
+      "title": "Ready to Create?",
+      "subtitle": "Start with our free name generator and see the magic",
+      "button": "Try Name Generator"
+    },
+    "footer": {
+      "copyright": "© 2024 OC Forge. All rights reserved."
+    }
+  }
+}

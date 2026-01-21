@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { X, Wand2, Image, Anvil, Flame, Home } from "lucide-react";
+import { X, Wand2, Image, Anvil, Flame, Home, LayoutDashboard, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -18,6 +20,17 @@ const navItems = [
 
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const location = useLocation();
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast({
+      title: "Signed Out",
+      description: "You have been signed out successfully.",
+    });
+    onClose();
+  };
 
   return (
     <AnimatePresence>
@@ -55,9 +68,43 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 </Button>
               </div>
 
+              {/* User Section */}
+              {user && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-6 p-3 rounded-lg bg-secondary"
+                >
+                  <p className="text-sm text-muted-foreground">Signed in as</p>
+                  <p className="text-sm font-medium text-foreground truncate">
+                    {user.email}
+                  </p>
+                </motion.div>
+              )}
+
               {/* Nav Items */}
               <nav className="flex-1">
                 <ul className="space-y-2">
+                  {user && (
+                    <motion.li
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.05 }}
+                    >
+                      <Link to="/dashboard" onClick={onClose}>
+                        <Button
+                          variant="ghost"
+                          className={cn(
+                            "w-full justify-start gap-3 h-12 text-base",
+                            location.pathname === "/dashboard" && "bg-secondary text-primary"
+                          )}
+                        >
+                          <LayoutDashboard className="h-5 w-5" />
+                          My Characters
+                        </Button>
+                      </Link>
+                    </motion.li>
+                  )}
                   {navItems.map((item, index) => {
                     const isActive = location.pathname === item.path;
                     const Icon = item.icon;
@@ -66,7 +113,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         key={item.path}
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 + 0.1 }}
+                        transition={{ delay: (user ? index + 1 : index) * 0.05 + 0.1 }}
                       >
                         <Link to={item.path} onClick={onClose}>
                           <Button
@@ -86,12 +133,30 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 </ul>
               </nav>
 
-              {/* CTA */}
+              {/* Bottom Actions */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
+                className="space-y-3"
               >
+                {user ? (
+                  <Button
+                    variant="outline"
+                    className="w-full h-12 text-destructive hover:text-destructive"
+                    onClick={handleSignOut}
+                  >
+                    <LogOut className="h-5 w-5" />
+                    Sign Out
+                  </Button>
+                ) : (
+                  <Link to="/auth" onClick={onClose}>
+                    <Button variant="outline" className="w-full h-12">
+                      <User className="h-5 w-5" />
+                      Sign In
+                    </Button>
+                  </Link>
+                )}
                 <Link to="/workbench" onClick={onClose}>
                   <Button variant="ember" className="w-full h-12">
                     <Anvil className="h-5 w-5" />

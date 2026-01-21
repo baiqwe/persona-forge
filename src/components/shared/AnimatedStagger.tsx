@@ -59,3 +59,6 @@ export function AnimatedStaggerItem({
     </motion.div>
   );
 }
+
+// Alias for convenience
+export const StaggerItem = AnimatedStaggerItem;

@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Flame, Wand2, Image, Anvil, Menu, LayoutDashboard } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { MobileMenu } from "./MobileMenu";
 import { UserMenu } from "./UserMenu";
+import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
@@ -16,6 +18,7 @@ const navItems = [
 
 export function Navbar() {
   const location = useLocation();
+  const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const { user } = useAuth();
@@ -53,7 +56,7 @@ export function Navbar() {
               <div className="absolute inset-0 bg-primary/30 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </motion.div>
             <span className="font-display text-xl font-bold text-gradient-ember">
-              OC Forge
+              {t("common.appName")}
             </span>
           </Link>
 
@@ -68,10 +71,10 @@ export function Navbar() {
                       "gap-2 font-body relative overflow-hidden",
                       location.pathname === "/dashboard" && "bg-secondary text-primary"
                     )}
-                  >
-                    <LayoutDashboard className="h-4 w-4" />
-                    My Characters
-                  </Button>
+                    >
+                      <LayoutDashboard className="h-4 w-4" />
+                      {t("nav.myCharacters")}
+                    </Button>
                 </motion.div>
               </Link>
             )}
@@ -106,6 +109,7 @@ export function Navbar() {
 
           {/* Right Section */}
           <div className="flex items-center gap-3">
+            <LanguageSwitcher />
             <UserMenu />
             
             {/* Mobile Menu Button */}

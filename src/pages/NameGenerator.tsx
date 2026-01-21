@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wand2, Copy, Check, Sparkles, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/layout/Layout";
 import { ForgeCard } from "@/components/shared/ForgeCard";
@@ -15,42 +16,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const races = [
-  { value: "elf", label: "Elf" },
-  { value: "orc", label: "Orc" },
-  { value: "human", label: "Human" },
-  { value: "demon", label: "Demon" },
-  { value: "dwarf", label: "Dwarf" },
-  { value: "dragon", label: "Dragon" },
-];
-
-const styles = [
-  { value: "fantasy", label: "Fantasy" },
-  { value: "scifi", label: "Sci-Fi" },
-  { value: "cute", label: "Cute" },
-  { value: "dark", label: "Dark" },
-  { value: "noble", label: "Noble" },
-  { value: "warrior", label: "Warrior" },
-];
-
 // Mock name generation - in production this would call an AI API
 const generateNames = (race: string, style: string): string[] => {
   const nameParts: Record<string, string[]> = {
-    elf: ["Ael", "Lar", "Syl", "Ith", "Ean", "Vor", "Thal", "Nym", "Cel", "Rin"],
-    orc: ["Grok", "Thrak", "Morg", "Krag", "Druk", "Brak", "Garn", "Thog", "Ruk", "Zog"],
     human: ["Ald", "Bran", "Cor", "Dav", "Eth", "Gar", "Hal", "Ivan", "Jak", "Kor"],
-    demon: ["Mal", "Zar", "Vor", "Nix", "Kor", "Xel", "Bal", "Mor", "Drak", "Ash"],
+    elf: ["Ael", "Lar", "Syl", "Ith", "Ean", "Vor", "Thal", "Nym", "Cel", "Rin"],
     dwarf: ["Thur", "Brum", "Gar", "Dor", "Bol", "Grim", "Thor", "Bron", "Dur", "Gor"],
-    dragon: ["Vyx", "Zyr", "Kael", "Drac", "Sorn", "Ryx", "Nax", "Vorn", "Tyrn", "Xar"],
+    orc: ["Grok", "Thrak", "Morg", "Krag", "Druk", "Brak", "Garn", "Thog", "Ruk", "Zog"],
+    tiefling: ["Mal", "Zar", "Vor", "Nix", "Kor", "Xel", "Bal", "Mor", "Drak", "Ash"],
+    dragonborn: ["Vyx", "Zyr", "Kael", "Drac", "Sorn", "Ryx", "Nax", "Vorn", "Tyrn", "Xar"],
   };
 
   const suffixes: Record<string, string[]> = {
     fantasy: ["iel", "wen", "dor", "mir", "thas", "orn", "ael", "ith", "ion", "ara"],
+    medieval: ["worth", "helm", "guard", "shield", "blade", "stone", "wood", "field", "brook", "ford"],
+    modern: ["son", "ton", "er", "es", "ley", "man", "berg", "stein", "ski", "ov"],
     scifi: ["ex", "on", "ax", "ix", "or", "an", "is", "os", "us", "ar"],
-    cute: ["i", "y", "ie", "ling", "kin", "belle", "star", "bloom", "heart", "puff"],
-    dark: ["bane", "doom", "shade", "void", "dread", "mort", "night", "shadow", "grim", "fell"],
-    noble: ["worth", "crest", "helm", "crown", "shield", "guard", "reign", "throne", "lord", "grace"],
-    warrior: ["blade", "fang", "storm", "iron", "steel", "rage", "fury", "blood", "war", "strike"],
+    japanese: ["ko", "mi", "ki", "ra", "ta", "na", "shi", "ka", "ri", "no"],
+    nordic: ["sson", "dottir", "heim", "gard", "vik", "berg", "fjord", "mund", "rid", "ulf"],
   };
 
   const prefixes = nameParts[race] || nameParts.human;
@@ -66,11 +49,30 @@ const generateNames = (race: string, style: string): string[] => {
 };
 
 export default function NameGenerator() {
+  const { t } = useTranslation();
   const [race, setRace] = useState("elf");
   const [style, setStyle] = useState("fantasy");
   const [names, setNames] = useState<string[]>([]);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  const races = [
+    { value: "human", label: t("nameGenerator.races.human") },
+    { value: "elf", label: t("nameGenerator.races.elf") },
+    { value: "dwarf", label: t("nameGenerator.races.dwarf") },
+    { value: "orc", label: t("nameGenerator.races.orc") },
+    { value: "tiefling", label: t("nameGenerator.races.tiefling") },
+    { value: "dragonborn", label: t("nameGenerator.races.dragonborn") },
+  ];
+
+  const styles = [
+    { value: "fantasy", label: t("nameGenerator.styles.fantasy") },
+    { value: "medieval", label: t("nameGenerator.styles.medieval") },
+    { value: "modern", label: t("nameGenerator.styles.modern") },
+    { value: "scifi", label: t("nameGenerator.styles.scifi") },
+    { value: "japanese", label: t("nameGenerator.styles.japanese") },
+    { value: "nordic", label: t("nameGenerator.styles.nordic") },
+  ];
 
   const handleGenerate = () => {
     setIsGenerating(true);
@@ -93,8 +95,8 @@ export default function NameGenerator() {
         <div className="container mx-auto px-4 max-w-4xl">
           <AnimatedSection>
             <SectionHeader
-              title="AI Name Generator"
-              subtitle="Generate unique fantasy names for your characters. Choose a race and style to get started."
+              title={t("nameGenerator.title")}
+              subtitle={t("nameGenerator.subtitle")}
             />
           </AnimatedSection>
 
@@ -104,7 +106,7 @@ export default function NameGenerator() {
               <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
-                    Race
+                    {t("nameGenerator.raceLabel")}
                   </label>
                   <Select value={race} onValueChange={setRace}>
                     <SelectTrigger className="bg-secondary border-border h-12">
@@ -122,7 +124,7 @@ export default function NameGenerator() {
 
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
-                    Style
+                    {t("nameGenerator.styleLabel")}
                   </label>
                   <Select value={style} onValueChange={setStyle}>
                     <SelectTrigger className="bg-secondary border-border h-12">
@@ -150,12 +152,12 @@ export default function NameGenerator() {
                   {isGenerating ? (
                     <>
                       <Sparkles className="h-5 w-5 animate-spin" />
-                      Generating...
+                      {t("common.generating")}
                     </>
                   ) : (
                     <>
                       <Wand2 className="h-5 w-5" />
-                      Generate 10 Names
+                      {t("nameGenerator.generateNames")}
                     </>
                   )}
                 </Button>
@@ -173,7 +175,7 @@ export default function NameGenerator() {
                 className="space-y-4"
               >
                 <h3 className="font-display text-xl font-bold text-foreground">
-                  Generated Names
+                  {t("nameGenerator.generatedNames")}
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {names.map((name, index) => (
@@ -204,8 +206,8 @@ export default function NameGenerator() {
                         </motion.div>
                         <Link to={`/workbench?name=${encodeURIComponent(name)}`}>
                           <Button variant="forge" size="sm" className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity text-xs sm:text-sm">
-                            <span className="hidden sm:inline">Create Character</span>
-                            <span className="sm:hidden">Create</span>
+                            <span className="hidden sm:inline">{t("nameGenerator.createCharacter")}</span>
+                            <span className="sm:hidden">{t("common.create")}</span>
                             <ArrowRight className="h-3 w-3" />
                           </Button>
                         </Link>

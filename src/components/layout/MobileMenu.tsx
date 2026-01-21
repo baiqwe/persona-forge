@@ -1,33 +1,36 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { X, Wand2, Image, Anvil, Flame, Home, LayoutDashboard, User, LogOut } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const navItems = [
-  { path: "/", label: "Home", icon: Home },
-  { path: "/name-generator", label: "Name Generator", icon: Wand2 },
-  { path: "/avatar-maker", label: "Avatar Maker", icon: Image },
-  { path: "/workbench", label: "Workbench", icon: Anvil },
-];
-
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const location = useLocation();
+  const { t } = useTranslation();
   const { user, signOut } = useAuth();
   const { toast } = useToast();
+
+  const navItems = [
+    { path: "/", label: t("nav.home"), icon: Home },
+    { path: "/name-generator", label: t("nav.nameGenerator"), icon: Wand2 },
+    { path: "/avatar-maker", label: t("nav.avatarMaker"), icon: Image },
+    { path: "/workbench", label: t("nav.workbench"), icon: Anvil },
+  ];
 
   const handleSignOut = async () => {
     await signOut();
     toast({
-      title: "Signed Out",
-      description: "You have been signed out successfully.",
+      title: t("auth.signOutSuccess"),
+      description: t("auth.signOutSuccessDesc"),
     });
     onClose();
   };
@@ -60,12 +63,15 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 <div className="flex items-center gap-2">
                   <Flame className="h-6 w-6 text-primary glow-ember" />
                   <span className="font-display text-lg font-bold text-gradient-ember">
-                    OC Forge
+                    {t("common.appName")}
                   </span>
                 </div>
-                <Button variant="ghost" size="icon" onClick={onClose}>
-                  <X className="h-5 w-5" />
-                </Button>
+                <div className="flex items-center gap-2">
+                  <LanguageSwitcher />
+                  <Button variant="ghost" size="icon" onClick={onClose}>
+                    <X className="h-5 w-5" />
+                  </Button>
+                </div>
               </div>
 
               {/* User Section */}
@@ -75,7 +81,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   animate={{ opacity: 1, y: 0 }}
                   className="mb-6 p-3 rounded-lg bg-secondary"
                 >
-                  <p className="text-sm text-muted-foreground">Signed in as</p>
+                  <p className="text-sm text-muted-foreground">{t("common.email")}</p>
                   <p className="text-sm font-medium text-foreground truncate">
                     {user.email}
                   </p>
@@ -100,7 +106,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                           )}
                         >
                           <LayoutDashboard className="h-5 w-5" />
-                          My Characters
+                          {t("nav.myCharacters")}
                         </Button>
                       </Link>
                     </motion.li>
@@ -147,20 +153,20 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     onClick={handleSignOut}
                   >
                     <LogOut className="h-5 w-5" />
-                    Sign Out
+                    {t("common.signOut")}
                   </Button>
                 ) : (
                   <Link to="/auth" onClick={onClose}>
                     <Button variant="outline" className="w-full h-12">
                       <User className="h-5 w-5" />
-                      Sign In
+                      {t("common.signIn")}
                     </Button>
                   </Link>
                 )}
                 <Link to="/workbench" onClick={onClose}>
                   <Button variant="ember" className="w-full h-12">
                     <Anvil className="h-5 w-5" />
-                    Start Creating
+                    {t("nav.startCreating")}
                   </Button>
                 </Link>
               </motion.div>

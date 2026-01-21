@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Image, Sparkles, ArrowRight, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/layout/Layout";
 import { ForgeCard } from "@/components/shared/ForgeCard";
@@ -9,10 +10,6 @@ import { SectionHeader } from "@/components/shared/SectionHeader";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-
-const hairColors = ["Black", "Brown", "Blonde", "Red", "White", "Blue", "Purple", "Green"];
-const eyeColors = ["Brown", "Blue", "Green", "Amber", "Purple", "Red", "Gold", "Silver"];
-const outfits = ["Armor", "Robe", "Casual", "Royal", "Ninja", "Cyberpunk", "Victorian", "Tribal"];
 
 // Mock avatar generation - returns placeholder images
 const generateAvatars = (): string[] => {
@@ -26,6 +23,7 @@ const generateAvatars = (): string[] => {
 };
 
 export default function AvatarMaker() {
+  const { t } = useTranslation();
   const [description, setDescription] = useState("");
   const [selectedTags, setSelectedTags] = useState<{
     hair: string | null;
@@ -35,6 +33,28 @@ export default function AvatarMaker() {
   const [avatars, setAvatars] = useState<string[]>([]);
   const [selectedAvatar, setSelectedAvatar] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  const hairColors = [
+    { value: "black", label: t("avatarMaker.tags.black") },
+    { value: "blonde", label: t("avatarMaker.tags.blonde") },
+    { value: "brown", label: t("avatarMaker.tags.brown") },
+    { value: "red", label: t("avatarMaker.tags.red") },
+    { value: "white", label: t("avatarMaker.tags.white") },
+  ];
+
+  const eyeColors = [
+    { value: "blue", label: t("avatarMaker.tags.blue") },
+    { value: "green", label: t("avatarMaker.tags.green") },
+    { value: "brown", label: t("avatarMaker.tags.brown") },
+    { value: "purple", label: t("avatarMaker.tags.purple") },
+  ];
+
+  const outfits = [
+    { value: "armor", label: t("avatarMaker.tags.armor") },
+    { value: "robe", label: t("avatarMaker.tags.robe") },
+    { value: "casual", label: t("avatarMaker.tags.casual") },
+    { value: "formal", label: t("avatarMaker.tags.formal") },
+  ];
 
   const toggleTag = (category: "hair" | "eyes" | "outfit", value: string) => {
     setSelectedTags((prev) => ({
@@ -59,8 +79,8 @@ export default function AvatarMaker() {
         <div className="container mx-auto px-4 max-w-5xl">
           <AnimatedSection>
             <SectionHeader
-              title="Visual Avatar Maker"
-              subtitle="Create stunning character portraits with AI. Describe your vision or use tags to customize."
+              title={t("avatarMaker.title")}
+              subtitle={t("avatarMaker.subtitle")}
             />
           </AnimatedSection>
 
@@ -72,10 +92,10 @@ export default function AvatarMaker() {
                   {/* Description Input */}
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
-                      Describe Your Character
+                      {t("avatarMaker.descriptionLabel")}
                     </label>
                     <Textarea
-                      placeholder="A mysterious elven archer with a scar across their left eye, standing in moonlight..."
+                      placeholder={t("avatarMaker.descriptionPlaceholder")}
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       className="min-h-[100px] sm:min-h-[120px] bg-secondary border-border resize-none text-sm sm:text-base"
@@ -85,24 +105,24 @@ export default function AvatarMaker() {
                   {/* Tag Selections */}
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-3">
-                      Or Use Quick Tags
+                      {t("avatarMaker.tagsLabel")}
                     </label>
 
                     <div className="space-y-4">
                       {/* Hair Color */}
                       <div>
                         <span className="text-xs text-muted-foreground uppercase tracking-wider">
-                          Hair Color
+                          {t("avatarMaker.categories.hairColor")}
                         </span>
                         <div className="flex flex-wrap gap-2 mt-2">
                           {hairColors.map((color) => (
-                            <motion.div key={color} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <motion.div key={color.value} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                               <Badge
-                                variant={selectedTags.hair === color ? "default" : "outline"}
+                                variant={selectedTags.hair === color.value ? "default" : "outline"}
                                 className="cursor-pointer hover:bg-primary/20 transition-colors text-xs sm:text-sm"
-                                onClick={() => toggleTag("hair", color)}
+                                onClick={() => toggleTag("hair", color.value)}
                               >
-                                {color}
+                                {color.label}
                               </Badge>
                             </motion.div>
                           ))}
@@ -112,17 +132,17 @@ export default function AvatarMaker() {
                       {/* Eye Color */}
                       <div>
                         <span className="text-xs text-muted-foreground uppercase tracking-wider">
-                          Eye Color
+                          {t("avatarMaker.categories.eyeColor")}
                         </span>
                         <div className="flex flex-wrap gap-2 mt-2">
                           {eyeColors.map((color) => (
-                            <motion.div key={color} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <motion.div key={color.value} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                               <Badge
-                                variant={selectedTags.eyes === color ? "default" : "outline"}
+                                variant={selectedTags.eyes === color.value ? "default" : "outline"}
                                 className="cursor-pointer hover:bg-primary/20 transition-colors text-xs sm:text-sm"
-                                onClick={() => toggleTag("eyes", color)}
+                                onClick={() => toggleTag("eyes", color.value)}
                               >
-                                {color}
+                                {color.label}
                               </Badge>
                             </motion.div>
                           ))}
@@ -132,17 +152,17 @@ export default function AvatarMaker() {
                       {/* Outfit */}
                       <div>
                         <span className="text-xs text-muted-foreground uppercase tracking-wider">
-                          Outfit Style
+                          {t("avatarMaker.categories.outfit")}
                         </span>
                         <div className="flex flex-wrap gap-2 mt-2">
                           {outfits.map((outfit) => (
-                            <motion.div key={outfit} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <motion.div key={outfit.value} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                               <Badge
-                                variant={selectedTags.outfit === outfit ? "default" : "outline"}
+                                variant={selectedTags.outfit === outfit.value ? "default" : "outline"}
                                 className="cursor-pointer hover:bg-primary/20 transition-colors text-xs sm:text-sm"
-                                onClick={() => toggleTag("outfit", outfit)}
+                                onClick={() => toggleTag("outfit", outfit.value)}
                               >
-                                {outfit}
+                                {outfit.label}
                               </Badge>
                             </motion.div>
                           ))}
@@ -162,12 +182,12 @@ export default function AvatarMaker() {
                       {isGenerating ? (
                         <>
                           <Sparkles className="h-5 w-5 animate-spin" />
-                          Generating Avatars...
+                          {t("common.generating")}
                         </>
                       ) : (
                         <>
                           <Image className="h-5 w-5" />
-                          Generate 4 Avatars
+                          {t("avatarMaker.generateAvatars")}
                         </>
                       )}
                     </Button>
@@ -182,13 +202,13 @@ export default function AvatarMaker() {
                 <div className="h-full flex flex-col">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-display text-lg sm:text-xl font-bold text-foreground">
-                      Preview
+                      {t("avatarMaker.generatedAvatars")}
                     </h3>
                     {avatars.length > 0 && (
                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                         <Button variant="ghost" size="sm" onClick={handleGenerate}>
                           <RefreshCw className="h-4 w-4" />
-                          <span className="hidden sm:inline ml-1">Regenerate</span>
+                          <span className="hidden sm:inline ml-1">{t("common.generate")}</span>
                         </Button>
                       </motion.div>
                     )}
@@ -205,7 +225,7 @@ export default function AvatarMaker() {
                       >
                         <div className="text-center text-muted-foreground p-4">
                           <Image className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 opacity-50" />
-                          <p className="text-sm sm:text-base">Your generated avatars will appear here</p>
+                          <p className="text-sm sm:text-base">{t("workbench.visual.noAvatar")}</p>
                         </div>
                       </motion.div>
                     ) : (
@@ -257,7 +277,7 @@ export default function AvatarMaker() {
                             >
                               <Link to={`/workbench?avatar=${encodeURIComponent(avatars[selectedAvatar])}`}>
                                 <Button variant="forge" className="w-full h-12">
-                                  Chat with this Character
+                                  {t("avatarMaker.chatWithCharacter")}
                                   <ArrowRight className="h-4 w-4" />
                                 </Button>
                               </Link>

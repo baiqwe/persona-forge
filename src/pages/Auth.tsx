@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Layout } from "@/components/layout/Layout";
@@ -28,6 +29,7 @@ const authSchema = z.object({
 type AuthFormValues = z.infer<typeof authSchema>;
 
 export default function Auth() {
+  const { t } = useTranslation();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [isLoading, setIsLoading] = useState(false);
   const { user, signIn, signUp } = useAuth();
@@ -56,53 +58,37 @@ export default function Auth() {
       if (mode === "signin") {
         const { error } = await signIn(values.email, values.password);
         if (error) {
-          if (error.message.includes("Invalid login credentials")) {
-            toast({
-              title: "Login Failed",
-              description: "Invalid email or password. Please try again.",
-              variant: "destructive",
-            });
-          } else {
-            toast({
-              title: "Login Failed",
-              description: error.message,
-              variant: "destructive",
-            });
-          }
+          toast({
+            title: t("auth.authError"),
+            description: error.message,
+            variant: "destructive",
+          });
         } else {
           toast({
-            title: "Welcome back!",
-            description: "You have successfully signed in.",
+            title: t("auth.signInSuccess"),
+            description: t("auth.signInSuccessDesc"),
           });
           navigate("/dashboard");
         }
       } else {
         const { error } = await signUp(values.email, values.password);
         if (error) {
-          if (error.message.includes("already registered")) {
-            toast({
-              title: "Account Exists",
-              description: "This email is already registered. Try signing in instead.",
-              variant: "destructive",
-            });
-          } else {
-            toast({
-              title: "Sign Up Failed",
-              description: error.message,
-              variant: "destructive",
-            });
-          }
+          toast({
+            title: t("auth.authError"),
+            description: error.message,
+            variant: "destructive",
+          });
         } else {
           toast({
-            title: "Welcome to OC Forge!",
-            description: "Your account has been created successfully.",
+            title: t("auth.signUpSuccess"),
+            description: t("auth.signUpSuccessDesc"),
           });
           navigate("/dashboard");
         }
       }
     } catch (err) {
       toast({
-        title: "Error",
+        title: t("auth.authError"),
         description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
@@ -124,13 +110,13 @@ export default function Auth() {
             <div className="inline-flex items-center justify-center gap-3 mb-4">
               <Flame className="h-10 w-10 text-primary glow-ember" />
               <span className="font-display text-3xl font-bold text-gradient-ember">
-                OC Forge
+                {t("common.appName")}
               </span>
             </div>
             <p className="text-muted-foreground">
               {mode === "signin" 
-                ? "Welcome back, creator" 
-                : "Begin your journey"}
+                ? t("auth.welcomeBack")
+                : t("auth.joinTheForge")}
             </p>
           </motion.div>
 
@@ -145,7 +131,7 @@ export default function Auth() {
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                Sign In
+                {t("common.signIn")}
               </button>
               <button
                 onClick={() => setMode("signup")}
@@ -155,7 +141,7 @@ export default function Auth() {
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                Sign Up
+                {t("common.signUp")}
               </button>
             </div>
 
@@ -166,12 +152,12 @@ export default function Auth() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t("common.email")}</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <Input
-                            placeholder="your@email.com"
+                            placeholder={t("auth.emailPlaceholder")}
                             className="pl-10 bg-secondary border-border"
                             {...field}
                           />
@@ -187,13 +173,13 @@ export default function Auth() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>{t("common.password")}</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <Input
                             type="password"
-                            placeholder="••••••••"
+                            placeholder={t("auth.passwordPlaceholder")}
                             className="pl-10 bg-secondary border-border"
                             {...field}
                           />
@@ -222,11 +208,11 @@ export default function Auth() {
                       {isLoading ? (
                         <>
                           <Loader2 className="h-4 w-4 animate-spin" />
-                          {mode === "signin" ? "Signing In..." : "Creating Account..."}
+                          {t("common.loading")}
                         </>
                       ) : (
                         <>
-                          {mode === "signin" ? "Sign In" : "Create Account"}
+                          {mode === "signin" ? t("common.signIn") : t("common.signUp")}
                           <ArrowRight className="h-4 w-4" />
                         </>
                       )}
@@ -239,22 +225,22 @@ export default function Auth() {
             <p className="text-center text-sm text-muted-foreground mt-6">
               {mode === "signin" ? (
                 <>
-                  Don't have an account?{" "}
+                  {t("auth.noAccount")}{" "}
                   <button
                     onClick={() => setMode("signup")}
                     className="text-primary hover:underline"
                   >
-                    Sign up
+                    {t("common.signUp")}
                   </button>
                 </>
               ) : (
                 <>
-                  Already have an account?{" "}
+                  {t("auth.hasAccount")}{" "}
                   <button
                     onClick={() => setMode("signin")}
                     className="text-primary hover:underline"
                   >
-                    Sign in
+                    {t("common.signIn")}
                   </button>
                 </>
               )}

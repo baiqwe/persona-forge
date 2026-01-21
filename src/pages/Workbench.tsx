@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Anvil, User, Palette, MessageCircle, Download, RefreshCw, Sparkles, Send } from "lucide-react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { Anvil, User, Palette, MessageCircle, Download, RefreshCw, Sparkles, Send, Save, Loader2, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/layout/Layout";
 import { ForgeCard } from "@/components/shared/ForgeCard";
@@ -9,12 +9,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 interface CharacterData {
+  id?: string;
   name: string;
   keywords: string[];
   persona: string;
   avatar: string | null;
+  bio?: string;
 }
 
 interface ChatMessage {
@@ -72,18 +78,68 @@ const generateResponse = (character: CharacterData, userMessage: string): string
 
 export default function Workbench() {
   const [searchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState("create");
+  const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+  const { toast } = useToast();
+  
+  const characterId = searchParams.get("id");
+  const initialTab = searchParams.get("tab") || "create";
+  
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [character, setCharacter] = useState<CharacterData>({
     name: searchParams.get("name") || "",
     keywords: [],
     persona: "",
     avatar: searchParams.get("avatar") || null,
   });
+  const [isLoading, setIsLoading] = useState(!!characterId);
+  const [isSaving, setIsSaving] = useState(false);
   const [isGeneratingPersona, setIsGeneratingPersona] = useState(false);
   const [isGeneratingAvatar, setIsGeneratingAvatar] = useState(false);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState("");
   const [isSending, setIsSending] = useState(false);
+
+  // Load character if editing
+  useEffect(() => {
+    if (characterId && user) {
+      loadCharacter(characterId);
+    } else if (characterId && !authLoading && !user) {
+      navigate("/auth");
+    } else {
+      setIsLoading(false);
+    }
+  }, [characterId, user, authLoading]);
+
+  const loadCharacter = async (id: string) => {
+    try {
+      const { data, error } = await supabase
+        .from("characters")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) throw error;
+
+      setCharacter({
+        id: data.id,
+        name: data.name,
+        keywords: data.keywords || [],
+        persona: data.persona_prompt || "",
+        avatar: data.avatar_url,
+        bio: data.bio || "",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load character",
+        variant: "destructive",
+      });
+      navigate("/dashboard");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Generate random name
   const generateRandomName = () => {
@@ -130,6 +186,83 @@ export default function Workbench() {
     }, 1500);
   };
 
+  // Save character
+  const handleSave = async () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+
+    if (!character.name.trim()) {
+      toast({
+        title: "Name Required",
+        description: "Please give your character a name before saving.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      // Generate bio from persona
+      const bio = character.persona ? character.persona.slice(0, 100) + "..." : null;
+
+      if (character.id) {
+        // Update existing
+        const { error } = await supabase
+          .from("characters")
+          .update({
+            name: character.name,
+            keywords: character.keywords,
+            persona_prompt: character.persona,
+            avatar_url: character.avatar,
+            bio,
+          })
+          .eq("id", character.id);
+
+        if (error) throw error;
+
+        toast({
+          title: "Character Updated",
+          description: `${character.name} has been saved.`,
+        });
+      } else {
+        // Create new
+        const { data, error } = await supabase
+          .from("characters")
+          .insert({
+            user_id: user.id,
+            name: character.name,
+            keywords: character.keywords,
+            persona_prompt: character.persona,
+            avatar_url: character.avatar,
+            bio,
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        setCharacter((prev) => ({ ...prev, id: data.id }));
+        toast({
+          title: "Character Saved",
+          description: `${character.name} has been added to your collection.`,
+        });
+        
+        // Update URL with new ID
+        navigate(`/workbench?id=${data.id}`, { replace: true });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to save character",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   // Send chat message
   const handleSendMessage = () => {
     if (!chatInput.trim() || isSending) return;
@@ -158,26 +291,66 @@ export default function Workbench() {
     URL.revokeObjectURL(url);
   };
 
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className="min-h-screen py-24">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="font-display text-3xl md:text-4xl font-bold text-gradient-ember flex items-center gap-3">
-                <Anvil className="h-8 w-8" />
-                Character Workbench
-              </h1>
-              <p className="text-muted-foreground mt-2">
-                Create, customize, and chat with your original characters
-              </p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div className="flex items-center gap-4">
+              {user && (
+                <Link to="/dashboard">
+                  <Button variant="ghost" size="icon">
+                    <ArrowLeft className="h-5 w-5" />
+                  </Button>
+                </Link>
+              )}
+              <div>
+                <h1 className="font-display text-3xl md:text-4xl font-bold text-gradient-ember flex items-center gap-3">
+                  <Anvil className="h-8 w-8" />
+                  {character.id ? "Edit Character" : "Create Character"}
+                </h1>
+                <p className="text-muted-foreground mt-1">
+                  {character.id ? `Editing ${character.name}` : "Forge a new original character"}
+                </p>
+              </div>
             </div>
-            {character.name && (
-              <Button variant="ember" onClick={handleDownload}>
-                <Download className="h-4 w-4" />
-                Export Card
-              </Button>
-            )}
+            <div className="flex gap-2">
+              {user && (
+                <Button
+                  variant="ember"
+                  onClick={handleSave}
+                  disabled={isSaving || !character.name.trim()}
+                >
+                  {isSaving ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" />
+                      {character.id ? "Update" : "Save"}
+                    </>
+                  )}
+                </Button>
+              )}
+              {character.name && (
+                <Button variant="outline" onClick={handleDownload}>
+                  <Download className="h-4 w-4" />
+                  Export
+                </Button>
+              )}
+            </div>
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -453,6 +626,20 @@ export default function Workbench() {
               </div>
             </TabsContent>
           </Tabs>
+
+          {/* Sign in prompt for guests */}
+          {!user && !authLoading && (
+            <ForgeCard className="mt-8 text-center">
+              <p className="text-muted-foreground mb-4">
+                Sign in to save your character to your collection
+              </p>
+              <Link to="/auth">
+                <Button variant="ember">
+                  Sign In to Save
+                </Button>
+              </Link>
+            </ForgeCard>
+          )}
         </div>
       </div>
     </Layout>

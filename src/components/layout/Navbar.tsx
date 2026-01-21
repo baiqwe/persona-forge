@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Flame, Wand2, Image, Anvil, Menu } from "lucide-react";
+import { Flame, Wand2, Image, Anvil, Menu, LayoutDashboard } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { MobileMenu } from "./MobileMenu";
+import { UserMenu } from "./UserMenu";
+import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
   { path: "/name-generator", label: "Name Generator", icon: Wand2 },
@@ -16,6 +18,7 @@ export function Navbar() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,6 +59,22 @@ export function Navbar() {
 
           {/* Nav Links - Desktop */}
           <div className="hidden md:flex items-center gap-1">
+            {user && (
+              <Link to="/dashboard">
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      "gap-2 font-body relative overflow-hidden",
+                      location.pathname === "/dashboard" && "bg-secondary text-primary"
+                    )}
+                  >
+                    <LayoutDashboard className="h-4 w-4" />
+                    My Characters
+                  </Button>
+                </motion.div>
+              </Link>
+            )}
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               const Icon = item.icon;
@@ -87,14 +106,7 @@ export function Navbar() {
 
           {/* Right Section */}
           <div className="flex items-center gap-3">
-            <Link to="/workbench" className="hidden sm:block">
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button variant="ember">
-                  <Anvil className="h-4 w-4" />
-                  Start Creating
-                </Button>
-              </motion.div>
-            </Link>
+            <UserMenu />
             
             {/* Mobile Menu Button */}
             <Button
